@@ -1,7 +1,30 @@
 package main
 
+import "time"
+
 func main() {
-	Range()
+	//Range()
+
+	tick := time.NewTicker(3 * time.Second)
+	stopCh := make(chan struct{})
+	go func() {
+		time.Sleep(30 * time.Second)
+		stopCh <- struct{}{}
+	}()
+
+	for {
+	breakPoint:
+		select {
+		case dd := <-tick.C:
+			println(dd.String())
+		case <-stopCh:
+
+			break breakPoint
+			//default:
+			//	println("default ....")
+		}
+	}
+
 }
 
 func Point() {
